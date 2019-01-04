@@ -48,7 +48,7 @@
         }
       }
     },
-    created() {
+    mounted() {
       this.changeHash();
       window.addEventListener('hashchange', () => {
         this.changeHash();
@@ -62,11 +62,13 @@
           }
         });
       }
+
     },
     components: {
       'v-header': header
     }
   };
+
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

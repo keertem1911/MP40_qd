@@ -52,6 +52,7 @@
  const ERR_OK=0;
   const config = require('config');
 
+  console.log(config)
   export default {
     data () {
       return {

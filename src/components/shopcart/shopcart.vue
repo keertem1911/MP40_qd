@@ -57,7 +57,7 @@
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
-  import {accMul} from '../../common/js/util'
+  import {mapGetters} from 'vuex'
   import{saveToSession} from '../../common/js/store'
   import cartcontrol from 'components/cartcontrol/cartcontrol';
 
@@ -109,7 +109,8 @@
         fold: true
       };
     },
-    computed: {
+    computed:  {
+      ...mapGetters(['userinfo']),
       totalPrice() {
         let total = 0;
         this.selectFoods.forEach((food) => {
@@ -188,10 +189,16 @@
         });
       },
       pay() {
+
         if (this.totalPrice < this.minPrice||this.totalPrice===0) {
           return;
         }
-        window.selectedGoods = JSON.stringify(this.selectFoods);
+        const token =getCookie('token');
+        if(!token){
+          this.$router.push('/');
+        }
+
+        // window.selectedGoods = JSON.stringify(this.selectFoods);
         saveToSession('__SELECTEDGOODS__',this.selectFoods);
         this.$router.push('/payment');
       },
@@ -239,6 +246,14 @@
       cartcontrol
     }
   };
+  function getCookie(name) {
+    var arr;
+    var reg = new RegExp('(^| )' +name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+      return unescape(arr[2]);
+    else
+      return null;
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

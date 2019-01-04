@@ -16,7 +16,7 @@ module.exports = {
 		productionGzip: false,
 		productionGzipExtensions: ['js', 'css'],
 		  port: 8080,
-        	sellUrl: 'http://192.168.100.209',
+        	sellUrl: 'http://localhost',
         	openidUrl: 'http://sell.springboot.cn/sell/wechat/authorize',
         	wechatPayUrl: 'http://192.168.100.209'
 	},
@@ -27,7 +27,7 @@ module.exports = {
 		assetsPublicPath: '/',
     proxyTable: {
       '/sell': { // 匹配所有以 '/api'开头的请求路径
-        target: 'http://192.168.100.209', // 代理目标的基础路径
+        target: 'http://192.168.100.178', // 代理目标的基础路径
         changeOrigin: true, // 支持跨域
         // pathRewrite: {// 重写路径: 去掉路径中开头的'/api'
         //   '^/sell': ''

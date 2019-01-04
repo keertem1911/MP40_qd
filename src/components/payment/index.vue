@@ -6,8 +6,8 @@
     </div>
 	  <div class="user-info">
 			<div class="item"><label class="label">联系人</label><input placeholder="姓名" class="input" v-model="name" type="text"></div>
-			<div class="item"><label>联系电话</label><input placeholder="你的手机号"   v-model="phone" type="text"></div>
-			<div class="item"><label>送餐地址</label><input placeholder="送餐地址" v-model="address" type="text"></div>
+			<div class="item"><label>联系电话</label><input placeholder="您的手机号"   v-model="phone" type="text"></div>
+			<div class="item"><label>配送地址</label><input placeholder="配送地址" v-model="address" type="text"></div>
 		</div>
 		<div class="food-info">
 			<div class="card-hd"><img  class="avator" :src="sellerinfo.avatar"><span class="title">{{sellerinfo.name}}</span></div>
@@ -21,20 +21,28 @@
 			<div class="money">待支付¥{{this.allPay}}</div>
 			<div class="btn-pay" @click="pay">支付</div>
 		</div>
+    <AlertTip :alertText="alertText" v-show="alertShow" @closeTip="closeTip"/>
 	</div>
 </template>
 <script >
   import {mapGetters} from 'vuex'
+  import AlertTip from '../alertTip/AlertTip'
   import {loadFromSession} from '../../common/js/store'
-    var config = require('config')
+    var config = require('config');
     config = process.env.NODE_ENV === 'development' ? config.dev : config.build
 	export default {
+      components:{
+        AlertTip
+      },
 		data() {
 			return {
 				selectedGoods: [],
 				name: '',
 				phone: '',
-				address: ''
+				address: '',
+        alertText: '', // 提示文本
+        alertShow: false, // 是否显示警告框
+
 			};
 		},
 		computed: {
@@ -56,8 +64,27 @@
 		  console.log("created() -------")
 		},
 		methods: {
-
+      closeTip () {
+        this.alertShow = false;
+        this.alertText = ''
+      },
+      showAlert(alertText) {
+        this.alertShow = true;
+        this.alertText = alertText
+      },
 			pay() {
+			  if(!this.name){
+			    this.showAlert('请输入姓名');
+          return;
+        }
+        if(!this.phone){
+          this.showAlert('请输入电话');
+          return
+        }
+        if(!this.address){
+          this.showAlert('请输入配送地址');
+          return
+        }
         const openid= this.userinfo.openid;
 				const goods = this.selectedGoods.map(good => {
                     return {productId: good.id, productQuantity: good.count}
